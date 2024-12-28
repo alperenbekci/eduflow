@@ -1,11 +1,13 @@
+// components/ConnectWallet.jsx
 "use client";
-import { ethers } from "ethers"; // Sadece ethers'i import edin
+import { ethers } from "ethers";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import Button from "./Button";
 
 export default function ConnectWallet() {
   const [walletAddress, setWalletAddress] = useState(null);
   const [network, setNetwork] = useState(null);
+  const router = useRouter();
 
   const connectWallet = async () => {
     if (typeof window.ethereum !== "undefined") {
@@ -20,6 +22,8 @@ export default function ConnectWallet() {
         const provider = new ethers.BrowserProvider(window.ethereum);
         const network = await provider.getNetwork();
         setNetwork(network);
+
+        router.push("/messages");
       } catch (error) {
         console.error("Error request wallet:", error);
       }
@@ -28,6 +32,12 @@ export default function ConnectWallet() {
         "Cüzdan bulunamadı. Lütfen MetaMask gibi bir cüzdan sağlayıcısını kurun."
       );
     }
+  };
+
+  const disconnectWallet = () => {
+    setWalletAddress(null);
+    setNetwork(null);
+    // Ek olarak, cüzdan bağlantısını kesmek için gerekli işlemler
   };
 
   const handleAccountsChanged = (accounts) => {
@@ -61,22 +71,26 @@ export default function ConnectWallet() {
   }, []);
 
   return (
-    <div className="text-center">
+    <div className="flex flex-col md:flex-row items-center">
       {walletAddress ? (
-        <div>
-          <p className="mb-2">
-            <strong>Cüzdan Adresi:</strong> {walletAddress}
-          </p>
+        <div className="flex flex-col md:flex-row items-center md:space-x-4">
+          <div className="flex flex-col md:flex-row items-center gap-2">
+            <strong className="text-blue-500">Cüzdan Adresi:</strong>
+            <span className="text-black break-all">{walletAddress}</span>
+          </div>
           {network && (
-            <p>
-              <strong>BAŞARILI!</strong>
-            </p>
+            <button
+              onClick={disconnectWallet}
+              className="mt-2 md:mt-0 bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-xl transition duration-300"
+            >
+              Disconnect Wallet
+            </button>
           )}
         </div>
       ) : (
         <button
           onClick={connectWallet}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-xl"
+          className="w-full md:w-auto bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl transition duration-300"
         >
           Connect Wallet
         </button>

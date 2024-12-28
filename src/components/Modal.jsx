@@ -1,3 +1,4 @@
+// src/components/Modal.jsx
 "use client";
 
 import { useState } from "react";
@@ -11,7 +12,7 @@ export function Modal({ isOpen, onClose, onSubmit }) {
     e.preventDefault();
     if (!title.trim() || !question.trim() || !userName.trim()) return;
 
-    onSubmit({ title, question, userName });
+    onSubmit({ title, question, userName, status: "Pending", answers: [] });
     setTitle("");
     setQuestion("");
     setUserName("");

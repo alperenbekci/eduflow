@@ -1,29 +1,27 @@
 "use client";
+
 import { useState } from "react";
 
-export default function QuestionCard({
-  question,
-  userName,
-  initialStatus,
-  answers: initialAnswers,
+export default function QuestionCard({ 
+  question, 
+  userName, 
+  initialStatus, 
+  answers, 
+  onAnswerSubmit 
 }) {
-  const [status, setStatus] = useState(initialStatus);
-  const [answers, setAnswers] = useState(initialAnswers || []);
   const [answerInput, setAnswerInput] = useState("");
   const [isAnswering, setIsAnswering] = useState(false);
 
-  const handleAnswerSubmit = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     if (!answerInput.trim()) return;
-
-    setAnswers([...answers, { text: answerInput, user: "You" }]);
+    onAnswerSubmit(answerInput);
     setAnswerInput("");
-    setStatus("Answered");
     setIsAnswering(false);
   };
 
   return (
-    <div className="border rounded-lg p-4 shadow-md bg-white space-y-4 ">
+    <div className="border rounded-lg p-4 shadow-md bg-white space-y-4">
       {/* Header Section */}
       <div className="flex items-center justify-between">
         <div>
@@ -32,12 +30,12 @@ export default function QuestionCard({
         </div>
         <span
           className={`text-sm font-medium px-2 py-1 rounded-md ${
-            status === "Answered"
+            initialStatus === "Answered"
               ? "bg-green-100 text-green-700"
               : "bg-yellow-100 text-yellow-700"
           }`}
         >
-          {status}
+          {initialStatus}
         </span>
       </div>
 
@@ -54,30 +52,39 @@ export default function QuestionCard({
       </div>
 
       {/* Answer Input Section */}
-      {isAnswering ? (
-        <form onSubmit={handleAnswerSubmit} className="flex space-x-2">
-          <input
-            type="text"
-            value={answerInput}
-            onChange={(e) => setAnswerInput(e.target.value)}
-            placeholder="Type your answer..."
-            className="flex-1 border border-gray-300 rounded-md px-2 text-gray-600 py-1"
-          />
+      <div className="mt-2">
+        {isAnswering ? (
+          <form onSubmit={handleSubmit} className="flex space-x-2">
+            <input
+              type="text"
+              value={answerInput}
+              onChange={(e) => setAnswerInput(e.target.value)}
+              placeholder="Type your answer..."
+              className="flex-1 border border-gray-300 rounded-md px-2 text-gray-600 py-1"
+            />
+            <button
+              type="submit"
+              className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+            >
+              Submit
+            </button>
+            <button
+              type="button"
+              onClick={() => setIsAnswering(false)}
+              className="text-gray-500 px-3 py-1 rounded-md hover:text-gray-700"
+            >
+              Cancel
+            </button>
+          </form>
+        ) : (
           <button
-            type="submit"
-            className="bg-blue-500 text-white px-3 py-1 rounded-md hover:bg-blue-600"
+            onClick={() => setIsAnswering(true)}
+            className="text-blue-500 hover:underline text-sm"
           >
-            Submit
+            Answer
           </button>
-        </form>
-      ) : (
-        <button
-          onClick={() => setIsAnswering(true)}
-          className="text-blue-500 hover:underline text-sm"
-        >
-          Answer
-        </button>
-      )}
+        )}
+      </div>
     </div>
   );
 }
