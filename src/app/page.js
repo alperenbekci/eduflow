@@ -25,8 +25,8 @@ export default function Home() {
     <div className="min-h-screen bg-neutral-900 text-neutral-100 p-6 flex flex-col">
       <header className="flex justify-between items-center py-4 px-6 border-b border-neutral-800">
         <div className="flex items-center gap-3">
-          <Image src="/logo.svg" width={50} height={50} alt="Eduflow Logo" />
-        <h1 className="text-3xl font-bold tracking-wide">EDUFLOW</h1>
+          <Image src="/logo.svg" width={50} height={50} alt="Eduflow Logo"  className="hidden md:block"/>
+        <h1 className="text-2xl font-bold tracking-wide">EDUFLOW</h1>
         </div>
         {!account ? (
           <button
