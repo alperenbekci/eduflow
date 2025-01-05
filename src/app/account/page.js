@@ -91,7 +91,7 @@ export default function ProfilePage() {
           <section className="mb-8">
           <div  className=" flex justify-between items-center gap-6">
             <h2 className="text-xl font-semibold mb-4">Questions Asked</h2>
-            <Link href="/questions"> <p className="hover:underline font-bold text-xl">← back to app</p></Link>
+            <Link href="/questions"> <p className="hover:underline font-bold text-md">← back to app</p></Link>
             </div>
 
             <div className="mb-6">

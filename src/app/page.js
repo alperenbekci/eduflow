@@ -52,6 +52,11 @@ export default function Home() {
       <footer className="py-4 text-center text-sm text-neutral-500 border-t border-neutral-800">
         © 2025 Eduflow. All Rights Reserved.
       </footer>
+      <Link href="https://github.com/alperenbekci/eduflow" >
+      <p className=" text-center text-sm font-bold text-blue-500 hover:underline">
+       Open Source
+      </p>
+      </Link>
     </div>
   );
 }
