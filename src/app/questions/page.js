@@ -4,6 +4,7 @@
 import { useState, useEffect } from "react";
 import Modal from "../../components/Modal";
 import { ethers } from "ethers";
+import Link from "next/link";
 import QuestionAnswerABI from "../../contracts/QuestionAnswer.json";
 const contractAddress = "0xf3448613f17675F0Ad6c02e337834599E881aB85";
 
@@ -66,14 +67,23 @@ export default function QuestionsPage() {
 
   return (
     <div className="min-h-screen bg-neutral-900 text-neutral-100 p-6 flex flex-col">
+      
       <header className="flex justify-between items-center pb-4 border-b border-neutral-800">
+        <Link href="/questions">
         <h1 className="text-2xl font-bold">Questions</h1>
+        </Link>
+        <div className="flex justify-between items-center gap-4">
+        <Link href="/account">
+        <h1 className="hidden md:block text-xl font-bold hover:underline">Go to Account ↗</h1>
+        </Link> 
         <button
           className="bg-neutral-700 hover:bg-neutral-600 transition-colors px-4 py-2 rounded-md text-sm font-medium"
           onClick={() => setNewQuestionModalOpen(true)}
         >
           Ask a Question
         </button>
+        </div>
+        
       </header>
 
       <main className="mt-6 flex-grow">
@@ -83,7 +93,7 @@ export default function QuestionsPage() {
             value={searchTerm}
             onChange={handleSearch}
             placeholder="Search questions..."
-            className="w-full px-4 py-2 rounded-md bg-neutral-800 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-neutral-500"
+            className="w-full px-4 py-2 mb-12 rounded-md bg-neutral-800 text-neutral-100 focus:outline-none focus:ring-2 focus:ring-neutral-500"
           />
         </div>
 
