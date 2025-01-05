@@ -74,7 +74,7 @@ export default function QuestionsPage() {
         </Link>
         <div className="flex justify-between items-center gap-4">
         <Link href="/account">
-        <h1 className="hidden md:block text-xl font-bold hover:underline">Go to Account ↗</h1>
+        <h1 className="hidden md:block text-xl font-medium hover:underline">Go to Account ↗</h1>
         </Link> 
         <button
           className="bg-neutral-700 hover:bg-neutral-600 transition-colors px-4 py-2 rounded-md text-sm font-medium"
