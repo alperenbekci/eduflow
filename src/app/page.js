@@ -1,8 +1,10 @@
 "use client";
 
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState,  } from "react";
+
 
 
 
@@ -22,7 +24,10 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-neutral-900 text-neutral-100 p-6 flex flex-col">
       <header className="flex justify-between items-center py-4 px-6 border-b border-neutral-800">
-        <h1 className="text-2xl font-bold tracking-wide">EDUFLOW</h1>
+        <div className="flex items-center gap-3">
+          <Image src="/logo.svg" width={50} height={50} alt="Eduflow Logo" />
+        <h1 className="text-3xl font-bold tracking-wide">EDUFLOW</h1>
+        </div>
         {!account ? (
           <button
             className="bg-neutral-700 hover:bg-neutral-600 transition-colors px-4 py-2 rounded-md text-sm font-medium"
@@ -53,7 +58,7 @@ export default function Home() {
         © 2025 Eduflow. All Rights Reserved.
       </footer>
       <Link href="https://github.com/alperenbekci/eduflow" >
-      <p className=" text-center text-sm font-bold text-blue-500 hover:underline">
+      <p className=" text-center text-sm font-bold text-blue-400 hover:underline">
        Open Source
       </p>
       </Link>
