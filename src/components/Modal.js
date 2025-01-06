@@ -1,6 +1,5 @@
 "use client";
 
-
 import { useState } from "react";
 import { ethers } from "ethers";
 import QuestionAnswerABI from "../contracts/QuestionAnswer.json";
@@ -12,9 +11,12 @@ export default function Modal({
   isNewQuestion = false,
   newQuestionContent,
   setNewQuestionContent,
-  fetchQuestions
+  fetchQuestions,
 }) {
   const [answerContent, setAnswerContent] = useState("");
+
+  // Cüzdan adresini kısaltmak için yardımcı fonksiyon
+  const shortenAddress = (address) => `${address.slice(0, 6)}...${address.slice(-4)}`;
 
   const addAnswer = async () => {
     if (!answerContent) return alert("Please enter an answer!");
@@ -79,7 +81,9 @@ export default function Modal({
         ) : (
           <>
             <p className="mt-4 text-neutral-200">{question.content}</p>
-            <p className="text-sm text-neutral-400 mt-2">Asked by: {question.asker}</p>
+            <p className="text-sm text-neutral-400 mt-2">
+              Asked by: {shortenAddress(question.asker)}
+            </p>
             <textarea
               value={answerContent}
               onChange={(e) => setAnswerContent(e.target.value)}
