@@ -1,6 +1,5 @@
 "use client";
 
-// app/questions/page.js
 import { useState, useEffect } from "react";
 import Modal from "../../components/Modal";
 import { ethers } from "ethers";
@@ -19,7 +18,10 @@ export default function QuestionsPage() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
 
-  // Fetch questions
+  // Cüzdan adresini kısaltmak için yardımcı fonksiyon
+  const shortenAddress = (address) => `${address.slice(0, 6)}...${address.slice(-4)}`;
+
+  // Soruları fetch etme
   const fetchQuestions = async () => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const contract = new ethers.Contract(contractAddress, QuestionAnswerABI, provider);
@@ -37,7 +39,7 @@ export default function QuestionsPage() {
       fetchedQuestions.push({ ...question, answers });
     }
 
-    // Sort questions by ID (newest first)
+    // ID'ye göre sırala (yeniden eskiye)
     fetchedQuestions.sort((a, b) => b.id - a.id);
 
     setQuestions(fetchedQuestions);
@@ -67,23 +69,23 @@ export default function QuestionsPage() {
 
   return (
     <div className="min-h-screen bg-neutral-900 text-neutral-100 p-6 flex flex-col">
-      
       <header className="flex justify-between items-center pb-4 border-b border-neutral-800">
         <Link href="/questions">
-        <h1 className="text-2xl font-bold">Questions</h1>
+          <h1 className="text-2xl font-bold">Questions</h1>
         </Link>
         <div className="flex justify-between items-center gap-4">
-        <Link href="/account">
-        <h1 className="hidden md:block text-md font-medium hover:underline">Go to Account ↗</h1>
-        </Link> 
-        <button
-          className="bg-neutral-700 hover:bg-neutral-600 transition-colors px-4 py-2 rounded-md text-sm font-medium"
-          onClick={() => setNewQuestionModalOpen(true)}
-        >
-          Ask a Question
-        </button>
+          <Link href="/account">
+            <h1 className="hidden md:block text-md font-medium hover:underline">
+              Go to Account ↗
+            </h1>
+          </Link>
+          <button
+            className="bg-neutral-700 hover:bg-neutral-600 transition-colors px-4 py-2 rounded-md text-sm font-medium"
+            onClick={() => setNewQuestionModalOpen(true)}
+          >
+            Ask a Question
+          </button>
         </div>
-        
       </header>
 
       <main className="mt-6 flex-grow">
@@ -102,7 +104,10 @@ export default function QuestionsPage() {
             <div
               key={q.id.toString()}
               className="bg-neutral-800 p-4 rounded-md cursor-pointer hover:bg-neutral-700 transition-colors"
-              onClick={() => { setCurrentQuestion(q); setModalOpen(true); }}
+              onClick={() => {
+                setCurrentQuestion(q);
+                setModalOpen(true);
+              }}
             >
               <p className="text-base font-medium">
                 <strong>#{q.id.toString()}</strong> {q.content}
@@ -111,7 +116,7 @@ export default function QuestionsPage() {
               {q.answers.length > 0 ? (
                 q.answers.map((a, idx) => (
                   <p key={idx} className="text-sm text-neutral-400">
-                    - {a.content} (by {a.responder})
+                    - {a.content} (by {shortenAddress(a.responder)})
                   </p>
                 ))
               ) : (
@@ -139,9 +144,7 @@ export default function QuestionsPage() {
       </main>
 
       {/* Modal */}
-      {modalOpen && (
-        <Modal question={currentQuestion} onClose={() => setModalOpen(false)} />
-      )}
+      {modalOpen && <Modal question={currentQuestion} onClose={() => setModalOpen(false)} />}
       {newQuestionModalOpen && (
         <Modal
           onClose={() => setNewQuestionModalOpen(false)}

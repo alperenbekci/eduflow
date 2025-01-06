@@ -1,10 +1,10 @@
 "use client";
 
-// app/profile/page.js
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import QuestionAnswerABI from "../../contracts/QuestionAnswer.json";
 import Link from "next/link";
+
 const contractAddress = "0xf3448613f17675F0Ad6c02e337834599E881aB85";
 
 export default function ProfilePage() {
@@ -60,20 +60,18 @@ export default function ProfilePage() {
     if (account) fetchUserQuestions();
   }, [account]);
 
+  // Cüzdan adresini kısaltmak için yardımcı fonksiyon
+  const shortenAddress = (address) => `${address.slice(0, 6)}...${address.slice(-4)}`;
+
   return (
-    <div className=" min-h-screen bg-neutral-900 text-neutral-100 p-6">
-      <header className=" flex justify-between items-center pb-4 border-b border-neutral-800">
-        
+    <div className="min-h-screen bg-neutral-900 text-neutral-100 p-6">
+      <header className="flex justify-between items-center pb-4 border-b border-neutral-800">
         <h1 className="text-2xl font-bold">Account</h1>
-        
         {account ? (
-            <div  className=" flex justify-between items-center gap-6">
-             
-               
-              
-                <p className="hidden md:block text-sm text-neutral-400 ">Connected as: {account}</p>
-                
-          
+          <div className="flex justify-between items-center gap-6">
+            <p className="hidden md:block text-sm text-neutral-400">
+              Connected as: {shortenAddress(account)}
+            </p>
           </div>
         ) : (
           <button
@@ -83,54 +81,57 @@ export default function ProfilePage() {
             Connect Wallet
           </button>
         )}
-    
       </header>
 
-      {account &&  (
+      {account && (
         <main className="mt-6">
           <section className="mb-8">
-          <div  className=" flex justify-between items-center gap-6">
-            <h2 className="text-xl font-semibold mb-4">Questions Asked</h2>
-            <Link href="/questions"> <p className="hover:underline font-bold text-md">← back to app</p></Link>
+            <div className="flex justify-between items-center gap-6">
+              <h2 className="text-xl font-semibold mb-4">Questions Asked</h2>
+              <Link href="/questions">
+                <p className="hover:underline font-bold text-md">← back to app</p>
+              </Link>
             </div>
 
-            <div className="mb-6">
-              <h3 className="text-lg font-bold mb-2">Answered Questions</h3>
-              <div className="space-y-4">
-                {answeredQuestions.map((q) => (
-                  <div
-                    key={q.id.toString()}
-                    className="bg-neutral-800 p-4 rounded-md"
-                  >
-                    <p className="text-base font-medium">
-                      <strong>#{q.id.toString()}</strong> {q.content}
-                    </p>
-                    <h4 className="text-sm font-bold mt-2">Answers:</h4>
-                    {q.answers.map((a, idx) => (
-                      <p key={idx} className="text-sm text-neutral-400">
-                        - {a.content} (by {a.responder})
-                      </p>
+            {questions.length === 0 ? (
+              <p className="text-center text-lg text-neutral-400 mt-6">
+                Go and ask a new question!
+              </p>
+            ) : (
+              <>
+                <div className="mb-6">
+                  <h3 className="text-lg font-bold mb-2">Answered Questions</h3>
+                  <div className="space-y-4">
+                    {answeredQuestions.map((q) => (
+                      <div key={q.id.toString()} className="bg-neutral-800 p-4 rounded-md">
+                        <p className="text-base font-medium">
+                          <strong>#{q.id.toString()}</strong> {q.content}
+                        </p>
+                        <h4 className="text-sm font-bold mt-2">Answers:</h4>
+                        {q.answers.map((a, idx) => (
+                          <p key={idx} className="text-sm text-neutral-400">
+                            - {a.content} (by {shortenAddress(a.responder)})
+                          </p>
+                        ))}
+                      </div>
                     ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
 
-            <div>
-              <h3 className="text-lg font-bold mb-2">Unanswered Questions</h3>
-              <div className="space-y-4">
-                {unansweredQuestions.map((q) => (
-                  <div
-                    key={q.id.toString()}
-                    className="bg-neutral-800 p-4 rounded-md"
-                  >
-                    <p className="text-base font-medium">
-                      <strong>#{q.id.toString()}</strong> {q.content}
-                    </p>
+                <div>
+                  <h3 className="text-lg font-bold mb-2">Unanswered Questions</h3>
+                  <div className="space-y-4">
+                    {unansweredQuestions.map((q) => (
+                      <div key={q.id.toString()} className="bg-neutral-800 p-4 rounded-md">
+                        <p className="text-base font-medium">
+                          <strong>#{q.id.toString()}</strong> {q.content}
+                        </p>
+                      </div>
+                    ))}
                   </div>
-                ))}
-              </div>
-            </div>
+                </div>
+              </>
+            )}
           </section>
         </main>
       )}
