@@ -1,16 +1,11 @@
 "use client";
 
-
 import Image from "next/image";
 import Link from "next/link";
-import { useState,  } from "react";
-
-
-
+import { useState } from "react";
 
 export default function Home() {
   const [account, setAccount] = useState("");
-
 
   const connectWallet = async () => {
     if (typeof window.ethereum !== "undefined") {
@@ -21,12 +16,20 @@ export default function Home() {
     }
   };
 
+  const handleQuestionsClick = () => {
+    if (!account) {
+      alert("Please connect your wallet first!");
+      return;
+    }
+    window.location.href = "/questions"; // Sayfaya yönlendirme
+  };
+
   return (
     <div className="min-h-screen bg-neutral-900 text-neutral-100 p-6 flex flex-col">
       <header className="flex justify-between items-center py-4 px-6 border-b border-neutral-800">
         <div className="flex items-center gap-3">
-          <Image src="/logo.svg" width={50} height={50} alt="Eduflow Logo"  className="hidden md:block"/>
-        <h1 className="text-2xl font-bold tracking-wide">EDUFLOW</h1>
+          <Image src="/logo.svg" width={50} height={50} alt="Eduflow Logo" className="hidden md:block" />
+          <h1 className="text-2xl font-bold tracking-wide">EDUFLOW</h1>
         </div>
         {!account ? (
           <button
@@ -46,21 +49,20 @@ export default function Home() {
           <p className="text-base text-neutral-300">
             Engage with others by asking questions and sharing answers in a decentralized way.
           </p>
-          <Link href="/questions">
-            <button className="bg-neutral-800 hover:bg-neutral-700 transition-colors px-5 py-3 mt-5 rounded-md font-medium text-sm">
-              Explore Questions
-            </button>
-          </Link>
+          <button
+            className="bg-neutral-800 hover:bg-neutral-700 transition-colors px-5 py-3 mt-5 rounded-md font-medium text-sm"
+            onClick={handleQuestionsClick}
+          >
+            Explore Questions
+          </button>
         </div>
       </main>
 
       <footer className="py-4 text-center text-sm text-neutral-500 border-t border-neutral-800">
         © 2025 Eduflow. All Rights Reserved.
       </footer>
-      <Link href="https://github.com/alperenbekci/eduflow" >
-      <p className=" text-center text-sm font-bold text-blue-400 hover:underline">
-       Open Source
-      </p>
+      <Link href="https://github.com/alperenbekci/eduflow">
+        <p className="text-center text-sm font-bold text-blue-400 hover:underline">Open Source</p>
       </Link>
     </div>
   );
